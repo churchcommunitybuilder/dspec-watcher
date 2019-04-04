@@ -1,0 +1,19 @@
+{
+    "name": "dkoehn/dspec-php-parser",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/dkoehn/file-watcher.git"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "nikic/php-parser": "^4.2",
+        "koala-framework/file-watcher": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "DKoehn\\DSpec\\": "src/"
+        }
+    }
+}
