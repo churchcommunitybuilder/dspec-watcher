@@ -59,7 +59,6 @@ class FileWatcher
 
         file_put_contents($this->cacheFile, serialize($this->cache));
 
-        // TODO: array_reduce for n level depth dependencies, and ensure will not infinitely recurs
         $refs = $this->cache->getReferencesForFile($filePath);
         $allRefs = $refs;
         foreach ($refs as $ref) {

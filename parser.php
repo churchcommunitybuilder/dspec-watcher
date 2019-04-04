@@ -6,12 +6,6 @@ $start = microtime(true);
 
 use DKoehn\DSpec\Cache\DependencyCache;
 
-use Kwf\FileWatcher\Watcher;
-use Kwf\FileWatcher\Event\Modify;
-use Kwf\FileWatcher\Event\Create;
-use Kwf\FileWatcher\Event\Delete;
-use Kwf\FileWatcher\Event\Move;
-use Kwf\FileWatcher\Event\QueueFull;
 use DKoehn\DSpec\Parser\CachedParser;
 use Symfony\Component\Finder\Finder;
 use DKoehn\DSpec\Watcher\FileWatcher;
@@ -23,7 +17,8 @@ use DKoehn\DSpec\Watcher\FileWatcher;
 // If modified files, then get a list of tests to run
 // If no modified files, then begin watching
 
-$paths = ['src-examples', 'spec'];
+$paths = ['../churchcommunitybuilder/app/src', '../churchcommunitybuilder/app/spec'];
+// $paths = ['src-examples', 'spec'];
 $cacheFile = './.dspec_cache';
 
 if (file_exists($cacheFile)) {
@@ -47,7 +42,7 @@ if ($lastModifiedTime !== null) {
 }
 
 $filePaths = [];
-foreach ($finder->files()->in(__DIR__ . '/src-examples') as $file) {
+foreach ($finder->files()->in($paths) as $file) {
     /** @var \SplFileInfo $file */
     $filePaths[] = $file->getPath() . '/' . $file->getFilename();
 }
@@ -58,9 +53,11 @@ if (count($filePaths)) {
     file_put_contents($cacheFile, serialize($cache));
 }
 
+echo "Cache update took: " . (microtime(true) - $start) . "\n";
+
 // print_r($cache);
 
 $watcher = new FileWatcher($cache, $cachedParser, $cacheFile);
-$watcher->watch(__DIR__ . '/src-examples');
+$watcher->watch($paths);
 
 // echo (microtime(true) - $start) . "\n";
