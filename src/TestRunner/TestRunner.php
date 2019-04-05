@@ -36,10 +36,13 @@ class TestRunner
         }
 
         if (count($tests)) {
-            $cmd = $this->dspecPath . implode(' ', $tests);
+            $this->output->write("\033\143");
+            $this->output->writeln('Running tests...');
+
+            $cmd = $this->dspecPath . ' ' . implode(' ', $tests);
             exec($cmd, $output, $ret);
 
-            $this->output->write(sprintf("\033\143"));
+            $this->output->write("\033\143");
 
             // TODO: Add color
             $this->output->write($output);

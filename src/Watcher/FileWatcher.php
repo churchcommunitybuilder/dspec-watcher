@@ -113,6 +113,7 @@ class FileWatcher
         //     // $watcher->stop();
         // });
 
+        $this->output->write("\033\143");
         $this->output->writeln('Watching files for changes...');
 
         $watcher->start();
