@@ -98,13 +98,18 @@ class TestRunner
 
             foreach ($tests as $test) {
                 $cmd = $this->dspecPath . ' ' . $test;
-                $this->output->writeln($cmd);
+                $this->output->write($test);
 
                 exec($cmd, $output, $ret);
 
-                // TODO: Add color
-                foreach ($output as $line) {
-                    $this->output->writeln($line);
+                if ($ret === 0) {
+                    $this->output->writeln(' ✔');
+                } else {
+                    // TODO: Add color
+                    $this->output->writeln(' ✖');
+                    foreach ($output as $line) {
+                        $this->output->writeln($line);
+                    }
                 }
             }
         }
