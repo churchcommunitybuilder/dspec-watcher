@@ -1,5 +1,5 @@
 {
-    "name": "dkoehn/dspec-php-parser",
+    "name": "dkoehn/dspec-watcher",
     "repositories": [
         {
             "type": "git",
