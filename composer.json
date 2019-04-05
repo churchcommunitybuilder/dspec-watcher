@@ -24,5 +24,6 @@
         "psr-4": {
             "DKoehn\\DSpec\\": "src/"
         }
-    }
+    },
+    "bin": ["bin/dspec-watcher"]
 }
