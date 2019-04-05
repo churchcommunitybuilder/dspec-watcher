@@ -101,7 +101,6 @@ class TestRunner
         $tests = array_unique($tests);
 
         if (count($tests)) {
-            $this->output->write("\033\143");
             $this->output->writeln('Running tests...');
 
             foreach ($tests as $test) {
