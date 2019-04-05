@@ -15,7 +15,8 @@ class InputDefinition extends BaseInputDefinition
         $this->option('--help', '-h', InputOption::VALUE_NONE, 'Display this help message.');
         $this->argument('regexForTestFiles', InputArgument::OPTIONAL);
 
-        $this->option('testMatch', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY);
+        $this->option('dspecPath', null, InputOption::VALUE_OPTIONAL);
+        $this->option('dspec-path', null, InputOption::VALUE_OPTIONAL);
     }
 
     public function argument($name, $mode = null, $description = '', $default = null)

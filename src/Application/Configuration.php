@@ -35,7 +35,7 @@ class Configuration
         $configuration = new static();
 
         $configuration->regexForTestFiles = $input->getArgument('regexForTestFiles') ?? 'Spec.php$';
-        $configuration->dspecPath = $environment->getDSpecPath();
+        $configuration->dspecPath = $input->getOption('dspecPath') ?? $input->getOption('dspec-path') ?? $environment->getDSpecPath();
         $configuration->cwd = $environment->getCwd();
 
         return $configuration;
