@@ -36,7 +36,7 @@ class TestRunner
         }
 
         if (count($tests)) {
-            $cmd = $this->dspecPath . ' -f progress ' . implode(' ', $tests);
+            $cmd = $this->dspecPath . implode(' ', $tests);
             exec($cmd, $output, $ret);
 
             $this->output->write(sprintf("\033\143"));
