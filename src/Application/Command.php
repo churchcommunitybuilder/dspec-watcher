@@ -5,8 +5,10 @@ namespace DKoehn\DSpec\Application;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use DKoehn\DSpec\Cache\DependencyCache;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Finder\Finder;
+
+use DKoehn\DSpec\Cache\DependencyCache;
 use DKoehn\DSpec\Parser\CachedParser;
 use DKoehn\DSpec\Watcher\FileWatcher;
 use DKoehn\DSpec\TestRunner\TestRunner;
@@ -15,11 +17,12 @@ class Command extends BaseCommand
 {
     protected $configuration;
 
-    public function __construct(Configuration $configuration)
+    public function __construct(Configuration $configuration, InputDefinition $inputDefinition)
     {
         parent::__construct('dspec');
 
         $this->configuration = $configuration;
+        $this->setDefinition($inputDefinition);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

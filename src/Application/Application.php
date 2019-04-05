@@ -39,7 +39,7 @@ class Application extends BaseApplication
     {
         $this->configuration = Configuration::load($input, $this->environment);
 
-        $this->add(new Command($this->configuration));
+        $this->add(new Command($this->configuration, $this->environment->getInputDefinition()));
 
         $exit = parent::doRun($input, $output);
 
