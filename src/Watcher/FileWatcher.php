@@ -14,6 +14,7 @@ use DKoehn\DSpec\Parser\CachedParser;
 use Kwf\FileWatcher\Event\AbstractEvent;
 use DKoehn\DSpec\Parser\Adt;
 use DKoehn\DSpec\TestRunner\TestRunner;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class FileWatcher
 {
@@ -25,6 +26,8 @@ class FileWatcher
 
     /** @var TestRunner */
     protected $testRunner;
+    /** @var OutputInterface */
+    protected $output;
 
     protected $cacheFile;
 
@@ -32,11 +35,13 @@ class FileWatcher
         DependencyCache $cache,
         CachedParser $cachedParser,
         TestRunner $testRunner,
+        OutputInterface $output,
         string $cacheFile
     ) {
         $this->cache = $cache;
         $this->cachedParser = $cachedParser;
         $this->testRunner = $testRunner;
+        $this->output = $output;
         $this->cacheFile = $cacheFile;
     }
 
@@ -48,6 +53,7 @@ class FileWatcher
     public function onDelete(Delete $e)
     {
         $this->removeFile($e->filename);
+        // TODO: Handle delete
     }
 
     public function onMove(Move $e)
@@ -56,14 +62,13 @@ class FileWatcher
         $this->parseFile($e->destFilename);
     }
 
-    public function removeFile($filePath)
+    protected function removeFile($filePath)
     {
         unset($this->cache->adtsByFile[$filePath]);
     }
 
-    public function parseFile($filePath)
+    protected function parseFile($filePath)
     {
-        echo "Parsing: {$filePath}\n";
         $this->cachedParser->parse($this->cache, [$filePath]);
 
         file_put_contents($this->cacheFile, serialize($this->cache));
@@ -107,6 +112,8 @@ class FileWatcher
         //     // TODO: Too many changes, should stop and re-process?
         //     // $watcher->stop();
         // });
+
+        $this->output->writeln('Watching files for changes...');
 
         $watcher->start();
     }

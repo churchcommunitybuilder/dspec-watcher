@@ -82,10 +82,17 @@ class Command extends BaseCommand
 
         $testRunner = new TestRunner(
             $this->configuration->getRegexForTestFiles(),
-            $this->configuration->getDSpecPath()
+            $this->configuration->getDSpecPath(),
+            $output
         );
 
-        $watcher = new FileWatcher($cache, $cachedParser, $testRunner, $cacheFile);
+        $watcher = new FileWatcher(
+            $cache,
+            $cachedParser,
+            $testRunner,
+            $output,
+            $cacheFile
+        );
         $watcher->watch($paths);
 
         return 0;

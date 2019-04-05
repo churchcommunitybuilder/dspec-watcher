@@ -10,9 +10,6 @@
             "url": "https://github.com/churchcommunitybuilder/dspec"
         }
     ],
-    "config": {
-        "bin-dir": "bin"
-    },
     "require": {
         "php": ">=7.0",
         "nikic/php-parser": "^4.2",
