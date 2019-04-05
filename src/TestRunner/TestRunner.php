@@ -43,9 +43,14 @@ class TestRunner
         foreach ($files as $filePath) {
             $allRefs = array_merge($allRefs, $this->getRefsForFile($filePath));
         }
-        $allRefs = array_unique($allRefs);
 
-        $this->runTestsForRefs($allRefs);
+        $refs = [];
+        foreach ($allRefs as $ref) {
+            /** @var Adt $ref */
+            $refs[$ref->getFullyQualifiedName()] = $ref;
+        }
+
+        $this->runTestsForRefs(array_values($refs));
     }
 
     protected function getRefsForFile($filePath)
@@ -85,6 +90,7 @@ class TestRunner
                 $tests[] = $ref->getFilePath();
             }
         }
+        $tests = array_unique($tests);
 
         if (count($tests)) {
             $this->output->write("\033\143");
