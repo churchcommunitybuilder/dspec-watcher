@@ -44,7 +44,7 @@ class TestRunner
 
         $allRefs = [];
         foreach ($files as $filePath) {
-            if (preg_match('\.php$', $filePath)) {
+            if (preg_match('#\.php$#', trim($filePath))) {
                 $allRefs = array_merge($allRefs, $this->getRefsForFile($filePath));
             }
         }
@@ -124,7 +124,7 @@ class TestRunner
                 }
             }
 
-            $this->output->writeln('Tests finished in: ' . (microtime(true) - $start));
+            $this->output->writeln('Tests finished in: ' . round(microtime(true) - $start, 3));
         }
     }
 }
