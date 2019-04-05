@@ -39,13 +39,15 @@ class TestRunner
             $this->output->write("\033\143");
             $this->output->writeln('Running tests...');
 
-            $cmd = $this->dspecPath . ' ' . implode(' ', $tests);
-            exec($cmd, $output, $ret);
+            foreach ($tests as $test) {
+                $cmd = $this->dspecPath . ' ' . $test;
+                $this->output->writeln($cmd);
 
-            $this->output->write("\033\143");
+                exec($cmd, $output, $ret);
 
-            // TODO: Add color
-            $this->output->write($output);
+                // TODO: Add color
+                $this->output->write($output);
+            }
         }
     }
 }
