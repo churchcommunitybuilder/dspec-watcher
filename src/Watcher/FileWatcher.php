@@ -13,6 +13,7 @@ use DKoehn\DSpec\Cache\DependencyCache;
 use DKoehn\DSpec\Parser\CachedParser;
 use Kwf\FileWatcher\Event\AbstractEvent;
 use DKoehn\DSpec\Parser\Adt;
+use DKoehn\DSpec\TestRunner\TestRunner;
 
 class FileWatcher
 {
@@ -22,12 +23,20 @@ class FileWatcher
     /** @var CachedParser */
     protected $cachedParser;
 
+    /** @var TestRunner */
+    protected $testRunner;
+
     protected $cacheFile;
 
-    public function __construct(DependencyCache $cache, CachedParser $cachedParser, $cacheFile)
-    {
+    public function __construct(
+        DependencyCache $cache,
+        CachedParser $cachedParser,
+        TestRunner $testRunner,
+        string $cacheFile
+    ) {
         $this->cache = $cache;
         $this->cachedParser = $cachedParser;
+        $this->testRunner = $testRunner;
         $this->cacheFile = $cacheFile;
     }
 
@@ -84,7 +93,7 @@ class FileWatcher
 
         $allRefs = array_reduce($refs, $reducer, $refs);
 
-        print_r($allRefs);
+        $this->testRunner->runTestsForRefs($allRefs);
     }
 
     public function watch($paths)
