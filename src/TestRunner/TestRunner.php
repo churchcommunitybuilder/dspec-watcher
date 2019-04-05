@@ -44,7 +44,9 @@ class TestRunner
 
         $allRefs = [];
         foreach ($files as $filePath) {
-            $allRefs = array_merge($allRefs, $this->getRefsForFile($filePath));
+            if (preg_match('\.php$', $filePath)) {
+                $allRefs = array_merge($allRefs, $this->getRefsForFile($filePath));
+            }
         }
 
         $refs = [];
@@ -103,6 +105,8 @@ class TestRunner
         if (count($tests)) {
             $this->output->writeln('Running tests...');
 
+            $start = microtime(true);
+
             foreach ($tests as $test) {
                 $cmd = $this->dspecPath . ' ' . $test;
                 $this->output->write($test);
@@ -119,6 +123,8 @@ class TestRunner
                     }
                 }
             }
+
+            $this->output->writeln('Tests finished in: ' . (microtime(true) - $start));
         }
     }
 }
