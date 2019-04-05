@@ -90,6 +90,8 @@ class Command extends BaseCommand
             $output
         );
 
+        $testRunner->runTestsForGitUnstaged();
+
         $watcher = new FileWatcher(
             $cache,
             $cachedParser,

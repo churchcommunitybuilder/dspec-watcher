@@ -32,6 +32,9 @@ class TestRunner
 
     public function runTestsForGitUnstaged()
     {
+        $this->output->write("\033\143");
+        $this->output->writeln('Determining tests to run...');
+
         exec('git ls-files --other --modified --exclude-standard', $files, $ret);
 
         if ($ret !== 0) {
@@ -50,7 +53,12 @@ class TestRunner
             $refs[$ref->getFullyQualifiedName()] = $ref;
         }
 
-        $this->runTestsForRefs(array_values($refs));
+        if (count($refs) === 0) {
+            $this->output->write("\033\143");
+            $this->output->writeln('Watching files for changes...');
+        } else {
+            $this->runTestsForRefs(array_values($refs));
+        }
     }
 
     protected function getRefsForFile($filePath)
