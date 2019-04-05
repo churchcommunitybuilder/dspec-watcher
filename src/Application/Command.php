@@ -86,6 +86,7 @@ class Command extends BaseCommand
         $testRunner = new TestRunner(
             $this->configuration->getRegexForTestFiles(),
             $this->configuration->getDSpecPath(),
+            $cache,
             $output
         );
 

@@ -53,7 +53,8 @@ class FileWatcher
     public function onDelete(Delete $e)
     {
         $this->removeFile($e->filename);
-        // TODO: Handle delete
+
+        $this->testRunner->runTestsForGitUnstaged();
     }
 
     public function onMove(Move $e)
@@ -73,32 +74,7 @@ class FileWatcher
 
         file_put_contents($this->cacheFile, serialize($this->cache));
 
-        $refs = $this->cache->getReferencesForFile($filePath);
-        $allRefs = $refs;
-        foreach ($refs as $ref) {
-            /** @var Adt $ref */
-            $allRefs = array_merge(
-                $allRefs,
-                $this->cache->getReferencesByFQN($ref->getFullyQualifiedName())
-            );
-        }
-
-        $reducer = function($refs, Adt $adt) use (&$reducer) {
-            $newRefs = $this->cache->getReferencesByFQN($adt->getFullyQualifiedName());
-
-            foreach ($newRefs as $ref) {
-                if (!in_array($ref, $refs)) {
-                    $refs[] = $ref;
-                    $refs = array_reduce($refs, $reducer, $refs);
-                }
-            }
-
-            return $refs;
-        };
-
-        $allRefs = array_reduce($refs, $reducer, $refs);
-
-        $this->testRunner->runTestsForRefs($allRefs);
+        $this->testRunner->runTestsForGitUnstaged();
     }
 
     public function watch($paths)
