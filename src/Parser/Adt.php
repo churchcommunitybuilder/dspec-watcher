@@ -45,6 +45,11 @@ class Adt
         $this->dependencies[$dependency] = true;
     }
 
+    public function addDependencyFilePath(string $filePath)
+    {
+        $this->dependencyFilePaths[$filePath] = true;
+    }
+
     public function getFullyQualifiedName(): string
     {
         return ltrim($this->getNamespace() . '\\' . $this->getName());

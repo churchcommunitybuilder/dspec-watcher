@@ -35,20 +35,21 @@ class TestRunner
         $this->output->write("\033\143");
         $this->output->writeln('Determining tests to run...');
 
-        exec('git ls-files --other --modified --exclude-standard', $files, $ret);
+        exec('git ls-files --other --modified --exclude-standard', $changedFiles, $ret);
 
         if ($ret !== 0) {
-            $this->output->writeln($files[0]);
+            $this->output->writeln($changedFiles[0]);
             exit(1);
         }
 
-        $files = array_filter($files, function($file) {
+        $changedFiles = array_filter($changedFiles, function($file) {
             return !!preg_match('#\.php$#', $file);
         });
-        $tests = $this->findRelatedTests($files);
+
+        $tests = $this->findRelatedTests($changedFiles);
 
         if (count($tests) === 0) {
-            $this->output->write("\033\143");
+           $this->output->write("\033\143");
             $this->output->writeln('Watching files for changes...');
         } else {
             $this->runTests($tests);

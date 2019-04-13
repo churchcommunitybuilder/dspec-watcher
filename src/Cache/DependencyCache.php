@@ -118,5 +118,6 @@ class DependencyCache
                 $this->adtsByFQN[$fqn] = $adt;
             }
         }
+        $this->setDependencyFilePaths();
     }
 }

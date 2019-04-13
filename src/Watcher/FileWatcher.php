@@ -74,6 +74,8 @@ class FileWatcher
 
         file_put_contents($this->cacheFile, serialize($this->cache));
 
+        $this->cache->setDependencyFilePaths();
+
         $this->testRunner->runTestsForGitUnstaged();
     }
 

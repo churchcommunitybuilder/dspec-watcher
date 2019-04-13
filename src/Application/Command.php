@@ -79,6 +79,7 @@ class Command extends BaseCommand
         if (count($filePaths)) {
             $cachedParser->parse($cache, $filePaths);
             file_put_contents($cacheFile, serialize($cache));
+            $cache->setDependencyFilePaths();
         }
 
         $output->writeln('Cache update took: ' . (microtime(true) - $startTime));
