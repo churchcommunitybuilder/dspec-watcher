@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b95d646266e056a89cfe173f12874fd5",
+    "content-hash": "5c449c96451027181636318d7fa7c3a4",
     "packages": [
         {
             "name": "davedevelopment/dspec",
@@ -16,8 +16,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/davedevelopment/dspec/zipball/6077b1d213dc09f1fbcf7b260f3926a7019a0618",
-                "reference": "6077b1d213dc09f1fbcf7b260f3926a7019a0618",
+                "url": "https://api.github.com/repos/davedevelopment/dspec/zipball/57f19898cf89003704cc3b2aa5082ff47d8f74e4",
+                "reference": "57f19898cf89003704cc3b2aa5082ff47d8f74e4",
                 "shasum": ""
             },
             "require": {
@@ -58,7 +58,7 @@
                 "MIT"
             ],
             "description": "A BDD spec style testing tool for PHP 5.3",
-            "time": "2017-11-07T08:10:33+00:00"
+            "time": "2019-02-21T14:29:58+00:00"
         },
         {
             "name": "koala-framework/file-watcher",

@@ -15,7 +15,8 @@
         "nikic/php-parser": "^4.2",
         "koala-framework/file-watcher": "dev-master",
         "davedevelopment/dspec": "dev-master",
-        "symfony/console": "^2.6"
+        "symfony/console": "^2.6",
+        "symfony/process": "^2.6"
     },
     "autoload": {
         "psr-4": {

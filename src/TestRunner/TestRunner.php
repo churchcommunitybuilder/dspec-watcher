@@ -6,6 +6,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use DKoehn\DSpec\Cache\DependencyCache;
 use DKoehn\DSpec\DependencyResolver\DependencyResolver;
+use Symfony\Component\Process\Process;
 
 class TestRunner
 {
@@ -81,19 +82,35 @@ class TestRunner
 
             $cmd = $this->dspecPath . ' -f progress ' . implode(' ', $tests);
 
-            exec($cmd, $output, $ret);
+            $this->output->writeln("Running: {$cmd}");
 
-            if ($ret === 0) {
-                $this->output->writeln(' ✔');
-            } else {
-                // TODO: Add color
-                $this->output->writeln(' ✖');
-                foreach ($output as $line) {
-                    $this->output->writeln($line);
+            $process = new Process($cmd);
+            $process->enableOutput();
+
+            $process->start(function($type, $output) {
+                if ($type === Process::OUT) {
+                    $this->output->write($output);
+                } else {
+                    // TODO: Handle err
+                    $this->output->write($output);
                 }
-            }
+            });
 
-            $this->output->writeln('Tests finished in: ' . round(microtime(true) - $start, 3));
+            $ret = $process->wait();
+
+            // exec($cmd, $output, $ret);
+
+            // if ($ret === 0) {
+            //     $this->output->writeln(' ✔');
+            // } else {
+            //     // TODO: Add color
+            //     $this->output->writeln(' ✖');
+            //     foreach ($output as $line) {
+            //         $this->output->writeln($line);
+            //     }
+            // }
+
+            // $this->output->writeln('Tests finished in: ' . round(microtime(true) - $start, 3));
         }
     }
 }
