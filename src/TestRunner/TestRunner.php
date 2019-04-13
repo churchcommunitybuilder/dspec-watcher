@@ -79,20 +79,17 @@ class TestRunner
 
             $start = microtime(true);
 
-            foreach ($tests as $test) {
-                $cmd = $this->dspecPath . ' ' . $test;
-                $this->output->write($test);
+            $cmd = $this->dspecPath . ' -f progress ' . implode(' ', $tests);
 
-                exec($cmd, $output, $ret);
+            exec($cmd, $output, $ret);
 
-                if ($ret === 0) {
-                    $this->output->writeln(' ✔');
-                } else {
-                    // TODO: Add color
-                    $this->output->writeln(' ✖');
-                    foreach ($output as $line) {
-                        $this->output->writeln($line);
-                    }
+            if ($ret === 0) {
+                $this->output->writeln(' ✔');
+            } else {
+                // TODO: Add color
+                $this->output->writeln(' ✖');
+                foreach ($output as $line) {
+                    $this->output->writeln($line);
                 }
             }
 
