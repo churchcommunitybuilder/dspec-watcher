@@ -4,8 +4,8 @@ namespace DKoehn\DSpec\TestRunner;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
-use DKoehn\DSpec\Parser\Adt;
 use DKoehn\DSpec\Cache\DependencyCache;
+use DKoehn\DSpec\DependencyResolver\DependencyResolver;
 
 class TestRunner
 {
