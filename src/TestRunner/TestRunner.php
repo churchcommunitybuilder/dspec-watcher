@@ -57,7 +57,7 @@ class TestRunner
 
     protected function findRelatedTests(array $changedFilePaths)
     {
-        $dependencyResolver = new DependencyResolver($this->dependencyMap);
+        $dependencyResolver = new DependencyResolver($this->cache);
 
         return $dependencyResolver->resolveInverse($changedFilePaths, function($filePath) {
             return $this->isTestFilePath($filePath);
