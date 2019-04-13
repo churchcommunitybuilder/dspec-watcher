@@ -52,7 +52,7 @@ class DependencyResolver
                 }, []);
             }
 
-            return $result;
+            return array_merge(array_keys($relatedFilePaths), $result);
         };
 
         $changed = [];
