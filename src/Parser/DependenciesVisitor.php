@@ -30,7 +30,9 @@ class DependenciesVisitor extends NodeVisitorAbstract
         } elseif ($node instanceof Name\FullyQualified) {
             $this->adt->addDependency($node->toString());
         } elseif ($node instanceof Stmt\Class_) {
-            $this->adt->setName($node->name->toString());
+            if ($node->name !== null) {
+                $this->adt->setName($node->name->toString());
+            }
         } elseif ($node instanceof Stmt\Namespace_) {
             $this->adt->setNamespace($node->name->toString());
         }
