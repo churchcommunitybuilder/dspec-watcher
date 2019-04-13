@@ -26,13 +26,12 @@ class CachedParser
             try {
                 $adt = new Adt($filePath);
                 $code = file_get_contents($filePath);
-        
+
                 $dependenciesVisitor->setAdt($adt);
         
                 $traverser->traverse($parser->parse($code));
-        
-                $cache->adtsByFile[$filePath] = $adt;
-                $cache->adtsByFQN[$adt->getFullyQualifiedName()] = $adt;
+
+                $cache->add($adt);
             } catch (Error $e) {
                 echo 'Parse Error: ', $e->getMessage();
             }

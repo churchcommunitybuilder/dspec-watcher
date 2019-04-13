@@ -65,7 +65,7 @@ class FileWatcher
 
     protected function removeFile($filePath)
     {
-        unset($this->cache->adtsByFile[$filePath]);
+        $this->cache->removeByFQN($filePath);
     }
 
     protected function parseFile($filePath)

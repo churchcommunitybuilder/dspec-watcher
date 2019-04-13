@@ -42,65 +42,35 @@ class TestRunner
             exit(1);
         }
 
-        $allRefs = [];
-        foreach ($files as $filePath) {
-            $allRefs = array_merge($allRefs, $this->getRefsForFile($filePath));
-        }
+        $tests = $this->findRelatedTests($files);
 
-        $refs = [];
-        foreach ($allRefs as $ref) {
-            /** @var Adt $ref */
-            $refs[$ref->getFullyQualifiedName()] = $ref;
-        }
-
-        if (count($refs) === 0) {
+        if (count($tests) === 0) {
             $this->output->write("\033\143");
             $this->output->writeln('Watching files for changes...');
         } else {
-            $this->runTestsForRefs(array_values($refs));
+            $this->runTests($tests);
         }
     }
 
-    protected function getRefsForFile($filePath)
+    protected function findRelatedTests(array $changedFilePaths)
     {
-        $refs = $this->cache->getReferencesForFile($filePath);
-        $allRefs = $refs;
-        foreach ($refs as $ref) {
-            /** @var Adt $ref */
-            $allRefs = array_merge(
-                $allRefs,
-                $this->cache->getReferencesByFQN($ref->getFullyQualifiedName())
-            );
-        }
+        $dependencyResolver = new DependencyResolver($this->dependencyMap);
 
-        $reducer = function($refs, Adt $adt) use (&$reducer) {
-            $newRefs = $this->cache->getReferencesByFQN($adt->getFullyQualifiedName());
-
-            foreach ($newRefs as $ref) {
-                if (!in_array($ref, $refs)) {
-                    $refs[] = $ref;
-                    $refs = array_reduce($refs, $reducer, $refs);
-                }
-            }
-
-            return $refs;
-        };
-
-        return array_reduce($refs, $reducer, $refs);
+        return $dependencyResolver->resolveInverse($changedFilePaths, function($filePath) {
+            return $this->isTestFilePath($filePath);
+        });
     }
 
-    public function runTestsForRefs(array $refs)
+    protected function isTestFilePath($filePath)
     {
-        $tests = [];
-        foreach ($refs as $ref) {
-            /** @var Adt $ref */
-            if (preg_match("#{$this->regexForTests}#", $ref->getFilePath())) {
-                $tests[] = $ref->getFilePath();
-            }
-        }
+        return !!preg_match("#{$this->regexForTests}#", $filePath);
+    }
+
+    public function runTests(array $tests)
+    {
         $tests = array_unique($tests);
 
-        if (count($tests)) {
+        if (count($tests) > 0) {
             $this->output->writeln('Running tests...');
 
             foreach ($tests as $test) {

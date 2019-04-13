@@ -7,9 +7,8 @@ class Adt
     protected $filepath;
     protected $name = null;
     protected $namespace = null;
-    protected $dependicies = [];
-
-    protected $hasBeenUniqued = false;
+    protected $dependencies = [];
+    protected $dependencyFilePaths = [];
 
     public function __construct(string $filepath)
     {
@@ -43,8 +42,7 @@ class Adt
 
     public function addDependency(string $dependency)
     {
-        $this->dependicies[] = $dependency;
-        $this->hasBeenUniqued = false;
+        $this->dependencies[$dependency] = true;
     }
 
     public function getFullyQualifiedName(): string
@@ -54,24 +52,23 @@ class Adt
 
     public function getDependencies(): array
     {
-        if (!$this->hasBeenUniqued) {
-            $this->dependicies = array_unique($this->dependicies);
-            $this->hasBeenUniqued = true;
-        }
-
-        return $this->dependicies;
+        return array_keys($this->dependencies);
     }
 
     public function hasDependency(Adt $adt)
     {
         $fqn = $adt->getFullyQualifiedName();
 
-        foreach ($this->getDependencies() as $dep) {
-            if ($fqn === $dep) {
-                return true;
-            }
-        }
+        return isset($this->dependencies[$fqn]);
+    }
 
-        return false;
+    public function getDependencyFilePaths()
+    {
+        return array_keys($this->dependencyFilePaths);
+    }
+
+    public function hasDependencyByFilePath($filePath)
+    {
+        return isset($this->dependencyFilePaths[$filePath]);
     }
 }
