@@ -42,6 +42,9 @@ class TestRunner
             exit(1);
         }
 
+        $files = array_filter($files, function($file) {
+            return !!preg_match('#\.php$#', $file);
+        });
         $tests = $this->findRelatedTests($files);
 
         if (count($tests) === 0) {
@@ -73,6 +76,8 @@ class TestRunner
         if (count($tests) > 0) {
             $this->output->writeln('Running tests...');
 
+            $start = microtime(true);
+
             foreach ($tests as $test) {
                 $cmd = $this->dspecPath . ' ' . $test;
                 $this->output->write($test);
@@ -89,6 +94,8 @@ class TestRunner
                     }
                 }
             }
+
+            $this->output->writeln('Tests finished in: ' . round(microtime(true) - $start, 3));
         }
     }
 }
