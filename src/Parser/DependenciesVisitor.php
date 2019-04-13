@@ -34,9 +34,6 @@ class DependenciesVisitor extends NodeVisitorAbstract
         } elseif ($node instanceof Stmt\Namespace_) {
             $this->adt->setNamespace($node->name->toString());
         }
-        // else {
-        //     echo get_class($node) . "\n";
-        // }
     }
 
     public function setAdt(Adt $adt)
