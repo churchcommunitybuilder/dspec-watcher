@@ -50,7 +50,7 @@ class TestRunner
         $tests = $this->findRelatedTests($changedFiles);
 
         if (count($tests) === 0) {
-        //    $this->output->write("\033\143");
+            $this->output->write("\033\143");
             $this->output->writeln('Watching files for changes...');
         } else {
             $this->runTests($tests);
@@ -81,8 +81,6 @@ class TestRunner
             $start = microtime(true);
 
             $cmd = $this->dspecPath . ' -f progress ' . implode(' ', $tests);
-
-            $this->output->writeln("Running: {$cmd}");
 
             $process = new Process($cmd);
             $process->setTty(true);
