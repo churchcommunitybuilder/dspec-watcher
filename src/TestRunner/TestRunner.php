@@ -85,6 +85,8 @@ class TestRunner
             $this->output->writeln("Running: {$cmd}");
 
             $process = new Process($cmd);
+            $process->setTty(true);
+            $process->setTimeout(180);
             $process->enableOutput();
 
             $process->start(function($type, $output) {
@@ -97,20 +99,6 @@ class TestRunner
             });
 
             $ret = $process->wait();
-
-            // exec($cmd, $output, $ret);
-
-            // if ($ret === 0) {
-            //     $this->output->writeln(' ✔');
-            // } else {
-            //     // TODO: Add color
-            //     $this->output->writeln(' ✖');
-            //     foreach ($output as $line) {
-            //         $this->output->writeln($line);
-            //     }
-            // }
-
-            // $this->output->writeln('Tests finished in: ' . round(microtime(true) - $start, 3));
         }
     }
 }
