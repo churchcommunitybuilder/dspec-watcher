@@ -36,7 +36,7 @@ class FileWatcher
         CachedParser $cachedParser,
         TestRunner $testRunner,
         OutputInterface $output,
-        string $cacheFile
+        string $cacheFile = null
     ) {
         $this->cache = $cache;
         $this->cachedParser = $cachedParser;
@@ -72,7 +72,9 @@ class FileWatcher
     {
         $this->cachedParser->parse($this->cache, [$filePath]);
 
-        file_put_contents($this->cacheFile, serialize($this->cache));
+        if ($this->cacheFile !== null) {
+            file_put_contents($this->cacheFile, serialize($this->cache));
+        }
 
         $this->cache->setDependencyFilePaths();
 

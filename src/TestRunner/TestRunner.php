@@ -50,7 +50,7 @@ class TestRunner
         $tests = $this->findRelatedTests($changedFiles);
 
         if (count($tests) === 0) {
-           $this->output->write("\033\143");
+        //    $this->output->write("\033\143");
             $this->output->writeln('Watching files for changes...');
         } else {
             $this->runTests($tests);

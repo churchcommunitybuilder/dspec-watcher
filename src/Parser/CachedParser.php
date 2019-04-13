@@ -39,6 +39,8 @@ class CachedParser
 
         $cache->setLastBuilt();
 
+        $cache->setDependencyFilePaths();
+
         return $cache;
     }
 }

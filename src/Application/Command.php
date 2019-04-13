@@ -44,23 +44,23 @@ class Command extends BaseCommand
 
         $startTime = microtime(true);
 
-        $cacheFile = $cwd . '/.dspec_cache';
+        // $cacheFile = $cwd . '/.dspec_cache';
 
-        if (file_exists($cacheFile)) {
-            $output->writeln('Loading from cache file...');
+        // if (file_exists($cacheFile)) {
+        //     $output->writeln('Loading from cache file...');
 
-            /** @var DependencyCache $cache */
-            $cache = @unserialize(file_get_contents($cacheFile));
-        }
+        //     /** @var DependencyCache $cache */
+        //     $cache = @unserialize(file_get_contents($cacheFile));
+        // }
 
-        if (!isset($cache)) {
-            $output->writeln('Initializing cache...');
+        // if (!isset($cache)) {
+            $output->writeln('Initializing dependencies...');
             $cache = new DependencyCache;
             $lastModifiedDate = null;
-        } else {
-            $lastModifiedDate = new \DateTime();
-            $lastModifiedDate->setTimestamp($cache->lastBuilt);
-        }
+        // } else {
+        //     $lastModifiedDate = new \DateTime();
+        //     $lastModifiedDate->setTimestamp($cache->lastBuilt);
+        // }
 
         $finder = new Finder();
         $finder->directories([$cwd])
@@ -78,8 +78,7 @@ class Command extends BaseCommand
         $cachedParser = new CachedParser;
         if (count($filePaths)) {
             $cachedParser->parse($cache, $filePaths);
-            file_put_contents($cacheFile, serialize($cache));
-            $cache->setDependencyFilePaths();
+            // file_put_contents($cacheFile, serialize($cache));
         }
 
         $output->writeln('Cache update took: ' . (microtime(true) - $startTime));
@@ -98,7 +97,7 @@ class Command extends BaseCommand
             $cachedParser,
             $testRunner,
             $output,
-            $cacheFile
+            null //$cacheFile
         );
         $watcher->watch($paths);
 
