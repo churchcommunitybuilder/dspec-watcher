@@ -111,6 +111,9 @@ class DependencyCache
 
     public function __wakeup()
     {
+        $count = count($this->adtsByFilePath);
+        echo "Waking up ({$count})...\n";
+
         foreach ($this->adtsByFile as $adt) {
             /** @var Adt $adt */
             $fqn = $adt->getFullyQualifiedName();

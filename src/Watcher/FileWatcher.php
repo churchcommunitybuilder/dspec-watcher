@@ -66,6 +66,12 @@ class FileWatcher
     protected function removeFile($filePath)
     {
         $this->cache->removeByFQN($filePath);
+
+        $this->cache->setDependencyFilePaths();
+
+        if ($this->cacheFile !== null) {
+            file_put_contents($this->cacheFile, serialize($this->cache));
+        }
     }
 
     protected function parseFile($filePath)
