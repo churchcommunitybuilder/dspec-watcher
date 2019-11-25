@@ -3,7 +3,7 @@
     "repositories": [
         {
             "type": "git",
-            "url": "https://github.com/dkoehn/file-watcher.git"
+			      "url": "https://github.com/churchcommunitybuilder/file-watcher.git"
         },
         {
             "type": "git",
@@ -13,10 +13,10 @@
     "require": {
         "php": ">=7.0",
         "nikic/php-parser": "^4.2",
-        "koala-framework/file-watcher": "*",
-        "davedevelopment/dspec": "dev-master",
-        "symfony/console": "^2.6",
-        "symfony/process": "^2.6"
+        "koala-framework/file-watcher": "2.0.x-dev",
+        "davedevelopment/dspec": "dev-upgrades",
+        "symfony/console": "^4.0.0",
+        "symfony/process": "^4.0.0"
     },
     "autoload": {
         "psr-4": {
