@@ -13,7 +13,7 @@
     "require": {
         "php": ">=7.0",
         "nikic/php-parser": "^4.2",
-        "koala-framework/file-watcher": "dev-master",
+        "koala-framework/file-watcher": "*",
         "davedevelopment/dspec": "dev-master",
         "symfony/console": "^2.6",
         "symfony/process": "^2.6"
