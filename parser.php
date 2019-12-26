@@ -4,11 +4,11 @@ require_once 'vendor/autoload.php';
 
 $start = microtime(true);
 
-use DKoehn\DSpec\Cache\DependencyCache;
+use CCB\DSpec\Cache\DependencyCache;
 
-use DKoehn\DSpec\Parser\CachedParser;
+use CCB\DSpec\Parser\CachedParser;
 use Symfony\Component\Finder\Finder;
-use DKoehn\DSpec\Watcher\FileWatcher;
+use CCB\DSpec\Watcher\FileWatcher;
 
 // Cache directory
 // If not exists then build cache from scratch

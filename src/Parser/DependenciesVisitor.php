@@ -1,6 +1,6 @@
 <?php
 
-namespace DKoehn\DSpec\Parser;
+namespace CCB\DSpec\Parser;
 
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node;

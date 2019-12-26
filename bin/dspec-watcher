@@ -11,10 +11,10 @@ if (is_file(__DIR__ . '/../../../autoload.php')) {
 
 $start = microtime(true);
 
-use DKoehn\DSpec\Application\Application;
-use DKoehn\DSpec\Application\CliArgsParser;
-use DKoehn\DSpec\Application\Environment;
-use DKoehn\DSpec\Application\InputDefinition;
+use CCB\DSpec\Application\Application;
+use CCB\DSpec\Application\CliArgsParser;
+use CCB\DSpec\Application\Environment;
+use CCB\DSpec\Application\InputDefinition;
 
 $parser = new CliArgsParser(['-c', '--configuration'], $argv);
 $environment = new Environment(

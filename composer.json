@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "DKoehn\\DSpec\\": "src/"
+            "CCB\\DSpec\\": "src/"
         }
     },
     "bin": ["bin/dspec-watcher"]

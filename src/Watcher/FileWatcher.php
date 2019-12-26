@@ -1,6 +1,6 @@
 <?php
 
-namespace DKoehn\DSpec\Watcher;
+namespace CCB\DSpec\Watcher;
 
 use Kwf\FileWatcher\Watcher;
 use Kwf\FileWatcher\Event\Modify;
@@ -9,11 +9,10 @@ use Kwf\FileWatcher\Event\Delete;
 use Kwf\FileWatcher\Event\Move;
 use Kwf\FileWatcher\Event\QueueFull;
 
-use DKoehn\DSpec\Cache\DependencyCache;
-use DKoehn\DSpec\Parser\CachedParser;
+use CCB\DSpec\Cache\DependencyCache;
+use CCB\DSpec\Parser\CachedParser;
 use Kwf\FileWatcher\Event\AbstractEvent;
-use DKoehn\DSpec\Parser\Adt;
-use DKoehn\DSpec\TestRunner\TestRunner;
+use CCB\DSpec\TestRunner\TestRunner;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class FileWatcher

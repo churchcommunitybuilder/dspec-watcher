@@ -1,6 +1,6 @@
 <?php
 
-namespace DKoehn\DSpec\Application;
+namespace CCB\DSpec\Application;
 
 class Environment
 {

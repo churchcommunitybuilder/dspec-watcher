@@ -1,8 +1,8 @@
 <?php
 
-namespace DKoehn\DSpec\Cache;
+namespace CCB\DSpec\Cache;
 
-use DKoehn\DSpec\Parser\Adt;
+use CCB\DSpec\Parser\Adt;
 
 
 class DependencyCache

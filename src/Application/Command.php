@@ -1,6 +1,6 @@
 <?php
 
-namespace DKoehn\DSpec\Application;
+namespace CCB\DSpec\Application;
 
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -8,10 +8,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Finder\Finder;
 
-use DKoehn\DSpec\Cache\DependencyCache;
-use DKoehn\DSpec\Parser\CachedParser;
-use DKoehn\DSpec\Watcher\FileWatcher;
-use DKoehn\DSpec\TestRunner\TestRunner;
+use CCB\DSpec\Cache\DependencyCache;
+use CCB\DSpec\Parser\CachedParser;
+use CCB\DSpec\Watcher\FileWatcher;
+use CCB\DSpec\TestRunner\TestRunner;
 
 class Command extends BaseCommand
 {

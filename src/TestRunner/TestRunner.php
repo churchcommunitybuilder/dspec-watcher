@@ -1,11 +1,11 @@
 <?php
 
-namespace DKoehn\DSpec\TestRunner;
+namespace CCB\DSpec\TestRunner;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
-use DKoehn\DSpec\Cache\DependencyCache;
-use DKoehn\DSpec\DependencyResolver\DependencyResolver;
+use CCB\DSpec\Cache\DependencyCache;
+use CCB\DSpec\DependencyResolver\DependencyResolver;
 use Symfony\Component\Process\Process;
 
 class TestRunner
