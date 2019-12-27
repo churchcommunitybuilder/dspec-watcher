@@ -39,6 +39,16 @@ class DependencyCache
         }
     }
 
+    public function removeByFilePath($filePath)
+    {
+        if (array_key_exists($filePath, $this->adtsByFilePath)) {
+            /** @var Adt $adt */
+            $adt = $this->adtsByFilePath[$filePath];
+            unset($this->adtsByFQN[$adt->getFullyQualifiedName()]);
+            unset($this->adtsByFilePath[$filePath]);
+        }
+    }
+
     public function getAdtByFilePath($filePath): ?Adt
     {
         if ($this->hasFilePath($filePath)) {

@@ -24,6 +24,8 @@ class CachedParser
 
         foreach ($filePaths as $filePath) {
             try {
+                if (!file_exists($filePath)) continue;
+
                 $adt = new Adt($filePath);
                 $code = file_get_contents($filePath);
 

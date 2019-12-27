@@ -7,7 +7,6 @@ use Kwf\FileWatcher\Event\Modify;
 use Kwf\FileWatcher\Event\Create;
 use Kwf\FileWatcher\Event\Delete;
 use Kwf\FileWatcher\Event\Move;
-use Kwf\FileWatcher\Event\QueueFull;
 
 use CCB\DSpec\Cache\DependencyCache;
 use CCB\DSpec\Parser\CachedParser;
@@ -29,19 +28,22 @@ class FileWatcher
     protected $output;
 
     protected $cacheFile;
+    protected $cwd;
 
     public function __construct(
         DependencyCache $cache,
         CachedParser $cachedParser,
         TestRunner $testRunner,
         OutputInterface $output,
-        string $cacheFile = null
+        string $cacheFile,
+        string $cwd
     ) {
         $this->cache = $cache;
         $this->cachedParser = $cachedParser;
         $this->testRunner = $testRunner;
         $this->output = $output;
         $this->cacheFile = $cacheFile;
+        $this->cwd = $cwd;
     }
 
     public function onModify(AbstractEvent $e)
@@ -64,7 +66,9 @@ class FileWatcher
 
     protected function removeFile($filePath)
     {
-        $this->cache->removeByFQN($filePath);
+        $filePath = str_replace($this->cwd . '/', '', $filePath);
+        echo "Removing: ".$filePath."\n";
+        $this->cache->removeByFilePath($filePath);
 
         $this->cache->setDependencyFilePaths();
 
@@ -75,13 +79,20 @@ class FileWatcher
 
     protected function parseFile($filePath)
     {
+        $filePath = str_replace($this->cwd . '/', '', $filePath);
+        echo "Parsing: ".$filePath."\n";
         $this->cachedParser->parse($this->cache, [$filePath]);
+
+        if (!file_exists($filePath)) {
+            echo "Removing: ".$filePath."\n";
+            $this->cache->removeByFilePath($filePath);
+        }
+
+        $this->cache->setDependencyFilePaths();
 
         if ($this->cacheFile !== null) {
             file_put_contents($this->cacheFile, serialize($this->cache));
         }
-
-        $this->cache->setDependencyFilePaths();
 
         $this->testRunner->runTestsForGitUnstaged();
     }

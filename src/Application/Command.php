@@ -62,6 +62,8 @@ class Command extends BaseCommand
             $lastModifiedDate->setTimestamp($cache->lastBuilt);
         }
 
+        $oldCachedFiles = $cache->getFilePaths();
+
         $finder = new Finder();
         $finder->directories([$cwd])
             ->name('*.php');
@@ -78,12 +80,30 @@ class Command extends BaseCommand
         $cachedParser = new CachedParser;
         if (count($filePaths)) {
             $cachedParser->parse($cache, $filePaths);
+        }
+
+        $finder = new Finder();
+        $finder->directories([$cwd])
+            ->name('*.php');
+        $allFiles = [];
+        foreach ($finder->files()->in($paths) as $file) {
+            /** @var \SplFileInfo $file */
+            $allFiles[] = str_replace($cwd . '/', '', $file->getPath()) . '/' . $file->getFilename();
+        }
+
+        $removedFilePaths = array_diff($oldCachedFiles, $allFiles);
+        if (count($removedFilePaths)) {
+            foreach ($removedFilePaths as $filePath) {
+                $cache->removeByFilePath($filePath);
+            }
+        }
+
+        if (count($filePaths) || count($removedFilePaths)) {
             file_put_contents($cacheFile, serialize($cache));
         }
 
-        // TODO: Handle removed files
-
         $output->writeln('Cache update took: ' . (microtime(true) - $startTime));
+        usleep(500000);
 
         $testRunner = new TestRunner(
             $this->configuration->getRegexForTestFiles(),
@@ -99,7 +119,8 @@ class Command extends BaseCommand
             $cachedParser,
             $testRunner,
             $output,
-            $cacheFile
+            $cacheFile,
+            $cwd
         );
         $watcher->watch($paths);
 
