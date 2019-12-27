@@ -103,6 +103,7 @@ class Command extends BaseCommand
         }
 
         if ($this->configuration->shouldFindRelatedTests()) {
+            $output->writeln('Cache update took: ' . (microtime(true) - $startTime));
             $testRunner = new TestRunner(
                 $this->configuration->getRegexForTestFiles(),
                 $this->configuration->getDSpecPath(),

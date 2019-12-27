@@ -92,7 +92,11 @@ class TestRunner
             $cmd = $this->dspecPath . ' -f progress ' . implode(' ', $tests);
 
             $process = new Process($cmd);
-            $process->setTty(true);
+            try {
+                $process->setTty(true);
+            } catch (\RuntimeException $e) {
+                // No op
+            }
             $process->setTimeout(180);
             $process->enableOutput();
 
