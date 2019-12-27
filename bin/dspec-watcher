@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+ini_set('xdebug.max_nesting_level', '1000');
+
 if (is_file(__DIR__ . '/../../../autoload.php')) {
     require __DIR__ . '/../../../autoload.php';
     $dspecPath = __DIR__ . '/../../../bin/dspec';

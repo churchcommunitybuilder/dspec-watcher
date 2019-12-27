@@ -34,7 +34,11 @@ class DependenciesVisitor extends NodeVisitorAbstract
                 $this->adt->setName($node->name->toString());
             }
         } elseif ($node instanceof Stmt\Namespace_) {
-            $this->adt->setNamespace($node->name->toString());
+            if ($node->name) {
+                $this->adt->setNamespace($node->name->toString());
+            } else {
+                $this->adt->setNamespace('\\');
+            }
         }
     }
 
