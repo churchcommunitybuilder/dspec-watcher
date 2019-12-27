@@ -31,6 +31,15 @@ class TestRunner
         $this->output = $output;
     }
 
+    public function runTestsForFiles(array $changedFiles)
+    {
+        $tests = $this->findRelatedTests($changedFiles);
+
+        if (count($tests)) {
+            $this->runTests($tests);
+        }
+    }
+
     public function runTestsForGitUnstaged()
     {
         $this->output->write("\033\143");

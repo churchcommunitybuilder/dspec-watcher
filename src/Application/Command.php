@@ -102,27 +102,40 @@ class Command extends BaseCommand
             file_put_contents($cacheFile, serialize($cache));
         }
 
-        $output->writeln('Cache update took: ' . (microtime(true) - $startTime));
-        usleep(500000);
+        if ($this->configuration->shouldFindRelatedTests()) {
+            $testRunner = new TestRunner(
+                $this->configuration->getRegexForTestFiles(),
+                $this->configuration->getDSpecPath(),
+                $cache,
+                $output
+            );
 
-        $testRunner = new TestRunner(
-            $this->configuration->getRegexForTestFiles(),
-            $this->configuration->getDSpecPath(),
-            $cache,
-            $output
-        );
+            $testRunner->runTestsForFiles(array_map(function($filePath) use ($cwd) {
+                return str_replace($cwd . '/', '', $filePath);
+            }, $this->configuration->getRelatedTests()));
+        } else {
+            $output->writeln('Cache update took: ' . (microtime(true) - $startTime));
+            usleep(500000);
 
-        $testRunner->runTestsForGitUnstaged();
+            $testRunner = new TestRunner(
+                $this->configuration->getRegexForTestFiles(),
+                $this->configuration->getDSpecPath(),
+                $cache,
+                $output
+            );
 
-        $watcher = new FileWatcher(
-            $cache,
-            $cachedParser,
-            $testRunner,
-            $output,
-            $cacheFile,
-            $cwd
-        );
-        $watcher->watch($paths);
+            $testRunner->runTestsForGitUnstaged();
+
+            $watcher = new FileWatcher(
+                $cache,
+                $cachedParser,
+                $testRunner,
+                $output,
+                $cacheFile,
+                $cwd
+            );
+            $watcher->watch($paths);
+        }
 
         return 0;
     }

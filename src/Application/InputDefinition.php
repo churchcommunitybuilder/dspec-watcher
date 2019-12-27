@@ -13,7 +13,9 @@ class InputDefinition extends BaseInputDefinition
         parent::__construct();
 
         $this->option('--help', '-h', InputOption::VALUE_NONE, 'Display this help message.');
-        $this->argument('regexForTestFiles', InputArgument::OPTIONAL);
+        $this->option('--testPathPattern', null, InputOption::VALUE_REQUIRED, 'A regexp pattern string that is matched against all test paths before executing the test.');
+        $this->option('--findRelatedTests', null, InputOption::VALUE_NONE, 'Find and run the tests that cover a space separated list of source files.');
+        $this->argument('testFiles', InputArgument::IS_ARRAY);
 
         $this->option('dspecPath', null, InputOption::VALUE_REQUIRED);
         $this->option('dspec-path', null, InputOption::VALUE_REQUIRED);
