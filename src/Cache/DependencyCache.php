@@ -1,8 +1,8 @@
 <?php
 
-namespace DKoehn\DSpec\Cache;
+namespace CCB\DSpec\Cache;
 
-use DKoehn\DSpec\Parser\Adt;
+use CCB\DSpec\Parser\Adt;
 
 
 class DependencyCache
@@ -36,6 +36,16 @@ class DependencyCache
             $adt = $this->adtsByFQN[$fqn];
             unset($this->adtsByFQN[$fqn]);
             unset($this->adtsByFilePath[$adt->getFilePath()]);
+        }
+    }
+
+    public function removeByFilePath($filePath)
+    {
+        if (array_key_exists($filePath, $this->adtsByFilePath)) {
+            /** @var Adt $adt */
+            $adt = $this->adtsByFilePath[$filePath];
+            unset($this->adtsByFQN[$adt->getFullyQualifiedName()]);
+            unset($this->adtsByFilePath[$filePath]);
         }
     }
 

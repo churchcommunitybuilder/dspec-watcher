@@ -1,8 +1,8 @@
 <?php
 
-namespace DKoehn\DSpec\DependencyResolver;
+namespace CCB\DSpec\DependencyResolver;
 
-use DKoehn\DSpec\Cache\DependencyCache;
+use CCB\DSpec\Cache\DependencyCache;
 
 class DependencyResolver
 {

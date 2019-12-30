@@ -1,6 +1,6 @@
 <?php
 
-namespace DKoehn\DSpec\Application;
+namespace CCB\DSpec\Application;
 
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -8,10 +8,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Finder\Finder;
 
-use DKoehn\DSpec\Cache\DependencyCache;
-use DKoehn\DSpec\Parser\CachedParser;
-use DKoehn\DSpec\Watcher\FileWatcher;
-use DKoehn\DSpec\TestRunner\TestRunner;
+use CCB\DSpec\Cache\DependencyCache;
+use CCB\DSpec\Parser\CachedParser;
+use CCB\DSpec\Watcher\FileWatcher;
+use CCB\DSpec\TestRunner\TestRunner;
 
 class Command extends BaseCommand
 {
@@ -62,6 +62,8 @@ class Command extends BaseCommand
             $lastModifiedDate->setTimestamp($cache->lastBuilt);
         }
 
+        $oldCachedFiles = $cache->getFilePaths();
+
         $finder = new Finder();
         $finder->directories([$cwd])
             ->name('*.php');
@@ -78,30 +80,63 @@ class Command extends BaseCommand
         $cachedParser = new CachedParser;
         if (count($filePaths)) {
             $cachedParser->parse($cache, $filePaths);
+        }
+
+        $finder = new Finder();
+        $finder->directories([$cwd])
+            ->name('*.php');
+        $allFiles = [];
+        foreach ($finder->files()->in($paths) as $file) {
+            /** @var \SplFileInfo $file */
+            $allFiles[] = str_replace($cwd . '/', '', $file->getPath()) . '/' . $file->getFilename();
+        }
+
+        $removedFilePaths = array_diff($oldCachedFiles, $allFiles);
+        if (count($removedFilePaths)) {
+            foreach ($removedFilePaths as $filePath) {
+                $cache->removeByFilePath($filePath);
+            }
+        }
+
+        if (count($filePaths) || count($removedFilePaths)) {
             file_put_contents($cacheFile, serialize($cache));
         }
 
-        // TODO: Handle removed files
+        if ($this->configuration->shouldFindRelatedTests()) {
+            $output->writeln('Cache update took: ' . (microtime(true) - $startTime));
+            $testRunner = new TestRunner(
+                $this->configuration->getRegexForTestFiles(),
+                $this->configuration->getDSpecPath(),
+                $cache,
+                $output
+            );
 
-        $output->writeln('Cache update took: ' . (microtime(true) - $startTime));
+            $testRunner->runTestsForFiles(array_map(function($filePath) use ($cwd) {
+                return str_replace($cwd . '/', '', $filePath);
+            }, $this->configuration->getRelatedTests()));
+        } else {
+            $output->writeln('Cache update took: ' . (microtime(true) - $startTime));
+            usleep(500000);
 
-        $testRunner = new TestRunner(
-            $this->configuration->getRegexForTestFiles(),
-            $this->configuration->getDSpecPath(),
-            $cache,
-            $output
-        );
+            $testRunner = new TestRunner(
+                $this->configuration->getRegexForTestFiles(),
+                $this->configuration->getDSpecPath(),
+                $cache,
+                $output
+            );
 
-        $testRunner->runTestsForGitUnstaged();
+            $testRunner->runTestsForGitUnstaged();
 
-        $watcher = new FileWatcher(
-            $cache,
-            $cachedParser,
-            $testRunner,
-            $output,
-            $cacheFile
-        );
-        $watcher->watch($paths);
+            $watcher = new FileWatcher(
+                $cache,
+                $cachedParser,
+                $testRunner,
+                $output,
+                $cacheFile,
+                $cwd
+            );
+            $watcher->watch($paths);
+        }
 
         return 0;
     }

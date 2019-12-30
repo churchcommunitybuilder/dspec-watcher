@@ -1,13 +1,13 @@
 <?php
 
-namespace DKoehn\DSpec\Parser;
+namespace CCB\DSpec\Parser;
 
 use PhpParser\ParserFactory;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\Error;
 
-use DKoehn\DSpec\Cache\DependencyCache;
+use CCB\DSpec\Cache\DependencyCache;
 
 class CachedParser
 {
@@ -24,11 +24,13 @@ class CachedParser
 
         foreach ($filePaths as $filePath) {
             try {
+                if (!file_exists($filePath)) continue;
+
                 $adt = new Adt($filePath);
                 $code = file_get_contents($filePath);
 
                 $dependenciesVisitor->setAdt($adt);
-        
+
                 $traverser->traverse($parser->parse($code));
 
                 $cache->add($adt);
